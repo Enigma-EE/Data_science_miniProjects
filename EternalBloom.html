@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Maddy!</title>
+    <style>
+        :root {
+            --neon-pink: #ff1493;
+            --neon-cyan: #00ffff;
+            --neon-purple: #9d00ff;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle, #1a1a1a, #000);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* 全息投影文字 */
+        .hologram-text {
+            position: relative;
+            z-index: 100;
+            text-align: center;
+            color: white;
+            text-shadow: 
+                0 0 10px var(--neon-pink),
+                0 0 20px var(--neon-cyan),
+                0 0 30px var(--neon-purple);
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .hologram-text h1 {
+            font-size: 3rem; /* 手机端调小字号 */
+            margin: 0;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hologram-text p {
+            font-size: 1.2rem; /* 手机端调小字号 */
+            margin: 10px 0 0;
+        }
+
+        /* 玫瑰花瓣雨 */
+        .petal {
+            position: absolute;
+            width: 10px; /* 手机端调小 */
+            height: 10px;
+            background: linear-gradient(45deg, #ff1493, #ff0066);
+            clip-path: polygon(50% 0%, 100% 35%, 70% 100%, 30% 100%, 0% 35%);
+            animation: fall linear infinite;
+            filter: drop-shadow(0 0 5px #ff1493);
+            pointer-events: none;
+        }
+
+        /* 整朵玫瑰花 */
+        .rose {
+            position: absolute;
+            font-size: 1.5rem; /* 手机端调小 */
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.5;
+            }
+        }
+
+        /* 花瓣堆积效果 */
+        .petal-pile {
+            position: fixed;
+            bottom: -50px;
+            width: 100%;
+            height: 100px; /* 手机端调小 */
+            background: linear-gradient(to top, rgba(255,20,147,0.5), transparent);
+            backdrop-filter: blur(5px);
+            pointer-events: none;
+        }
+
+        /* 霓虹爱心 */
+        .neon-heart {
+            position: absolute;
+            font-size: 2rem; /* 手机端调小 */
+            color: red;
+            filter: drop-shadow(0 0 10px red);
+            animation: float 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* 背景星光 */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* 烟花效果 */
+        .firework {
+            position: absolute;
+            width: 5px; /* 手机端调小 */
+            height: 5px;
+            background: linear-gradient(45deg, #ff1493, #00ffff, #9d00ff);
+            border-radius: 50%;
+            animation: explode 1s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(5); opacity: 0; }
+        }
+
+        /* 浪漫文字 */
+        .romantic-text {
+            position: absolute;
+            bottom: 10px; /* 手机端调小 */
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1rem; /* 手机端调小 */
+            text-align: center;
+            max-width: 90%; /* 手机端调宽 */
+            z-index: 100;
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-cyan);
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* 手机端适配 */
+        @media (max-width: 600px) {
+            .hologram-text h1 {
+                font-size: 2rem; /* 更小的字号 */
+            }
+            .hologram-text p {
+                font-size: 1rem;
+            }
+            .romantic-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-text">
+        <h1>Happy Birthday Maddy!</h1>
+        <p>Wishing you every day filled with love, joy, and endless roses! 🌹</p>
+    </div>
+
+    <div class="petal-pile"></div>
+
+    <!-- 浪漫文字 -->
+    <div class="romantic-text">
+        <p>
+            Like petals that mark the seasons,<br>
+            your presence colors my constellations.<br>
+            <br>
+            I’ll be the quiet dawn<br>
+            that forever cradles your bloom.<br>
+            🌹❤️
+        </p>
+    </div>
+
+    <script>
+        // 生成花瓣雨
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * window.innerWidth + 'px';
+            petal.style.animationDuration = Math.random() * 3 + 5 + 's';
+            petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(petal);
+
+            setTimeout(() => petal.remove(), 8000);
+        }
+
+        // 生成整朵玫瑰花
+        function createRose() {
+            const rose = document.createElement('div');
+            rose.className = 'rose';
+            rose.innerHTML = '🌹';
+            rose.style.left = Math.random() * window.innerWidth + 'px';
+            rose.style.animationDuration = Math.random() * 3 + 5 + 's';
+            rose.style.transform = `rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(rose);
+
+            setTimeout(() => rose.remove(), 8000);
+        }
+
+        // 生成霓虹爱心
+        function createNeonHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'neon-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = Math.random() * window.innerHeight + 'px';
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        // 生成背景星光
+        function createStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * window.innerWidth + 'px';
+            star.style.top = Math.random() * window.innerHeight + 'px';
+            star.style.animationDuration = Math.random() * 2 + 1 + 's';
+            document.body.appendChild(star);
+
+            setTimeout(() => star.remove(), 3000);
+        }
+
+        // 生成烟花
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * window.innerWidth + 'px';
+            firework.style.top = Math.random() * window.innerHeight + 'px';
+            firework.style.background = `linear-gradient(45deg, 
+                hsl(${Math.random() * 360}, 100%, 50%), 
+                hsl(${Math.random() * 360}, 100%, 50%))`;
+            document.body.appendChild(firework);
+
+            setTimeout(() => firework.remove(), 1000);
+        }
+
+        // 增加元素密度（手机端减少密度）
+        const isMobile = window.innerWidth <= 600;
+        setInterval(createPetal, isMobile ? 100 : 50);
+        setInterval(createRose, isMobile ? 300 : 200);
+        setInterval(createNeonHeart, isMobile ? 500 : 300);
+        setInterval(createStar, isMobile ? 200 : 100);
+        setInterval(createFirework, isMobile ? 1000 : 500);
+
+        // 动态背景色变化
+        let hue = 0;
+        setInterval(() => {
+            document.body.style.backgroundColor = `hsl(${hue}, 50%, 5%)`;
+            hue = (hue + 0.5) % 360;
+        }, 50);
+    </script>
+</body>
+</html>
